@@ -1,6 +1,6 @@
-$(document).ready(function() {
+$(document).ready(function () {
 
-    let orderID = Math.floor(Math.random() * 1000); 
+    let orderID = Math.floor(Math.random() * 1000);
 
     console.log(orderID);
 
@@ -8,10 +8,10 @@ $(document).ready(function() {
 
     //setting the orderID in local storage 
     localStorage.setItem('orderID', orderID);
-    
+
 
     // jQuery ajax form submit example, runs when form is submitted
-    $("#myFormID").submit(function(e) {
+    $("#myFormID").submit(function (e) {
         e.preventDefault(); // prevent actual form submit
 
 
@@ -25,18 +25,18 @@ $(document).ready(function() {
             type: "POST",
             url: '/momo',
             data: form.serialize(), // serializes form input
-            success: function(data){
+            success: function (data) {
                 data = JSON.parse(data)
                 console.log(data.status)
-                if(data.status == 'failed'){
-                     
+                if (data.status == 'failed') {
+
                     Swal.fire({
                         icon: 'warning',
                         title: 'The transaction was not approved',
                         showConfirmButton: false,
                         timer: 1500
                     })
-                }else if(data.status == 'success'){
+                } else if (data.status == 'success') {
                     Swal.fire({
                         icon: 'success',
                         title: 'The transaction was approved successfully',
@@ -44,7 +44,7 @@ $(document).ready(function() {
                         timer: 1500
                     })
 
-                }else {
+                } else {
                     Swal.fire({
                         icon: 'warning',
                         title: 'Transaction failed!',
@@ -59,26 +59,45 @@ $(document).ready(function() {
 
 
     //checking if the delete button is click and display message 
-    $("#last_transac").on('click', function(e){
+    $("#last_transac").on('click', function (e) {
         e.preventDefault();
         let href = $(this).attr('href')
 
         let id = localStorage.getItem('orderID');
 
-        href = `${href}${id}`;
+        href = `${href}/${id}`;
 
-        console.log(`${href}${id}`);
+        console.log(href);
 
         $.ajax({
             type: "GET",
             url: href,
-            headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Headers' : '*' },
-            success: function(data){
-                console.log(data)
+            headers: {
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Headers': '*'
+            },
+            success: function (data) {
+                //data = JSON.parse(data)
+                console.log(typeof data)
+
+                if (data.status == 'pending') {
+                    Swal.fire({
+                        icon: 'info',
+                        title: 'Transaction status',
+                        text: "Transaction still pending",
+                        confirmButtonText: 'Okay',
+                        
+                    }).then((result) => {
+                        if (result.value) {
+                            document.location.href = '/form';
+                        }
+
+                    })
+                }
             }
 
         })
-        
+
 
         // Swal.fire({
         //     icon:'warning',
@@ -93,43 +112,35 @@ $(document).ready(function() {
         //     if(result.value){
         //         document.location.href = href;
         //     }
-            
+
         // })
     })
 
 
-    const showLoading = function() {
+    const showLoading = function () {
         Swal.fire({
-          title: 'Transaction ongoing',
-          text: 'Kindly approve payment confirmation on your phone.',
-        //   allowEscapeKey: false,
-        //   allowOutsideClick: false,
-          timer: 60000,
-          didOpen: () => {
-            swal.showLoading();
-          }
-        }).then(
-          () => {},
-          (dismiss) => {
-            if (dismiss === 'timer') {
-              console.log('closed by timer!!!!');
-              swal({ 
-                title: 'Timeout kindly approve transaction',
-                type: 'success',
-                timer: 2000,
-                showConfirmButton: false
-              })
+            title: 'Transaction ongoing',
+            text: 'Kindly approve payment confirmation on your phone.',
+            //   allowEscapeKey: false,
+            //   allowOutsideClick: false,
+            timer: 60000,
+            didOpen: () => {
+                swal.showLoading();
             }
-          }
+        }).then(
+            () => {},
+            (dismiss) => {
+                if (dismiss === 'timer') {
+                    console.log('closed by timer!!!!');
+                    swal({
+                        title: 'Timeout kindly approve transaction',
+                        type: 'success',
+                        timer: 2000,
+                        showConfirmButton: false
+                    })
+                }
+            }
         )
     };
-    
+
 });
-
-
-
-
-
-
-
-  

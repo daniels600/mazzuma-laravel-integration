@@ -33,7 +33,7 @@
             </div>
         </form> --}}
         <div class="d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0">
-            <a class="btn btn-primary" id="last_transac" href="https://client.teamcyst.com/checktransaction.php?orderID=">Check Last Transaction</a>
+            <a class="btn btn-primary" id="last_transac" href="{{URL('/check_transaction')}}">Check Last Transaction</a>
         </div>
 
 

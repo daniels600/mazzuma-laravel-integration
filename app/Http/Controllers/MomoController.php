@@ -32,7 +32,11 @@ class MomoController extends Controller
     }
 
 
-    function checkTransaction(){
-        
+    function checkTransaction($id){
+
+        $response = 
+             Http::get('https://client.teamcyst.com/checktransaction.php?orderID='.$id);
+
+        return $response;
     }
 }

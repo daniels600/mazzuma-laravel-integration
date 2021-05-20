@@ -25,4 +25,5 @@ Route::get('/form',function (){
 
 Route::post('momo', [MomoController::class, 'makePayment'])->name('momo');
 
-Route::post('check_transac', [MomoController::class, 'checkTransaction'])->name('check_transaction');
+
+Route::get('check_transaction/{id}', [MomoController::class, 'checkTransaction']);
