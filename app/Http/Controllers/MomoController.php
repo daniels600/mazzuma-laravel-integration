@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Http;
 
 class MomoController extends Controller
 {
+    private $apiKey = "b0e73bf80fc4ce6093f7842baf25af23ebf97431";
     //A function to make the payment request 
     function makePayment(Request $request){
         $sender_num = $request->input('sender_number');
@@ -15,7 +16,6 @@ class MomoController extends Controller
         $sender_network = $request->input('sender_network', 'mtn');
         $orderID = $request->input('orderID');
         $option = 'rmtv';
-        $apiKey = "b0e73bf80fc4ce6093f7842baf25af23ebf97431";
 
         $response = 
                     Http::post('https://client.teamcyst.com/api_call.php', [
@@ -24,7 +24,7 @@ class MomoController extends Controller
                             'recipient_number' => $recipient_num,
                             'sender' => $sender_num,
                             'option' => $option,
-                            'apikey' => $apiKey,
+                            'apikey' => $this->apiKey,
                             'orderID' => $orderID
                     ]);
         return $response;
@@ -36,6 +36,33 @@ class MomoController extends Controller
 
         $response = 
              Http::get('https://client.teamcyst.com/checktransaction.php?orderID='.$id);
+
+        return $response;
+    }
+
+
+    function validate_Account(Request $request){
+        $userName = $request->input('username');
+
+        $option = 'validate_account';
+
+        $response = 
+                    Http::post('https://client.teamcyst.com/phase3/mazexchange-api.php', [
+                            'username' => $userName,
+                            'option' => $option,
+                            'apikey' => $this->apiKey
+                    ]);
+
+        return $response;
+    }
+
+
+    function getBalance(){
+        $response = 
+             Http::post('https://client.teamcyst.com/phase3/mazexchange-api.php', [
+                 'option' => 'get_balance',
+                 'apikey' => $this->apiKey
+             ]);
 
         return $response;
     }

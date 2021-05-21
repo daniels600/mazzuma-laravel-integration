@@ -33,25 +33,40 @@ $(document).ready(function () {
                     Swal.fire({
                         icon: 'warning',
                         title: 'The transaction was not approved',
-                        showConfirmButton: false,
-                        timer: 1500
-                    })
+                        showConfirmButton: true,
+                        //timer: 1500
+                    }).then((result) => {
+                      if(result.value){
+                          document.location.href = '/form';
+                      }
+          
+                  })
                 } else if (data.status == 'success') {
                     Swal.fire({
                         icon: 'success',
                         title: 'The transaction was approved successfully',
-                        showConfirmButton: false,
-                        timer: 1500
-                    })
+                        showConfirmButton: true,
+                        //timer: 1500
+                    }).then((result) => {
+                      if(result.value){
+                          document.location.href = '/form';
+                      }
+          
+                  })
 
                 } else {
                     Swal.fire({
                         icon: 'warning',
                         title: 'Transaction failed!',
                         text: 'Something went wrong. Transaction unsuccessful',
-                        showConfirmButton: false,
-                        timer: 1500
-                    })
+                        showConfirmButton: true,
+                        //timer: 1500
+                    }).then((result) => {
+                      if(result.value){
+                          document.location.href = '/form';
+                      }
+          
+                  })
                 }
             }
         });
@@ -77,43 +92,39 @@ $(document).ready(function () {
                 'Access-Control-Allow-Headers': '*'
             },
             success: function (data) {
-                //data = JSON.parse(data)
-                console.log(typeof data)
+                data = JSON.parse(data)
 
-                if (data.status == 'pending') {
+                console.log(data['status'])
+
+                if (data['status'] == 'Pending') {
                     Swal.fire({
                         icon: 'info',
                         title: 'Transaction status',
                         text: "Transaction still pending",
                         confirmButtonText: 'Okay',
                         
-                    }).then((result) => {
-                        if (result.value) {
-                            document.location.href = '/form';
-                        }
-
+                    })
+                } else if (data['status'] == 'Successful') {
+                    Swal.fire({
+                      icon: 'success',
+                      title: 'Transaction status',
+                      text: "Transaction Successful",
+                      confirmButtonText: 'Okay',
+                      
+                    })
+                }else {
+                    Swal.fire({
+                      icon: 'error',
+                      title: 'Transaction status',
+                      text: "Transaction failed!",
+                      confirmButtonText: 'Okay',
+                      
                     })
                 }
             }
 
         })
 
-
-        // Swal.fire({
-        //     icon:'warning',
-        //     title: 'Are you sure?',
-        //     text: "You won't be able to revert this!",
-        //     showCancelButton: true,
-        //     confirmButtonColor: '#3085d6',
-        //     cancelButtonColor: '#d33',
-        //     confirmButtonText: 'Yes, delete it!',
-        //     cancelButtonText: 'No, cancel!'
-        // }).then((result) => {
-        //     if(result.value){
-        //         document.location.href = href;
-        //     }
-
-        // })
     })
 
 
@@ -121,26 +132,66 @@ $(document).ready(function () {
         Swal.fire({
             title: 'Transaction ongoing',
             text: 'Kindly approve payment confirmation on your phone.',
-            //   allowEscapeKey: false,
-            //   allowOutsideClick: false,
+            showConfirmButton: true,
+            allowEscapeKey: false,
+            allowOutsideClick: false,
             timer: 60000,
             didOpen: () => {
                 swal.showLoading();
             }
         }).then(
-            () => {},
-            (dismiss) => {
-                if (dismiss === 'timer') {
-                    console.log('closed by timer!!!!');
-                    swal({
-                        title: 'Timeout kindly approve transaction',
-                        type: 'success',
-                        timer: 2000,
-                        showConfirmButton: false
-                    })
-                }
-            }
+
+            // () => {},
+            // (dismiss) => {
+            //     if (dismiss === 'timer') {
+            //         console.log('closed by timer!!!!');
+            //         swal({
+            //             title: 'Timeout kindly approve transaction',
+            //             type: 'success',
+            //             timer: 2000,
+            //             showConfirmButton: false
+            //         })
+            //     }
+            // }
         )
     };
+
+
+    $("#check_bal").on('click', function (e) {
+      e.preventDefault();
+      let href = $(this).attr('href')
+
+      Swal.fire({
+        title: 'Checking Balance',
+        text: 'Please wait...',
+        showConfirmButton: true,
+        timer: 15000,
+        didOpen: () => {
+          swal.showLoading();
+        }
+      });
+
+      $.ajax({
+        type: "GET",
+            url: href,
+            headers: {
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Headers': '*'
+            },
+            success: function (data) {
+              console.log(data)
+              data = JSON.parse(data)
+              console.log(data.balance, data.account_username)
+
+                Swal.fire({
+                  title: 'Account Balance',
+                  html: `<ul><li><b>Username:</b> ${data.account_username}</li> <li> <b>Account Balance:</b> ${data.balance}</li></ul>`,
+                  showConfirmButton: true,
+                })
+            }
+      })
+
+
+    });
 
 });

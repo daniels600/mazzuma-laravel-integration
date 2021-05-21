@@ -21,42 +21,19 @@
 
 <body class="bg-primary" style="background-image: url('./assets/images/larry-farr-BFJC05gzLXo-unsplash.jpg');height: 100%;  background-position: center;background-repeat: no-repeat;background-size: cover;">
     <nav class="sb-topnav navbar navbar-expand navbar-dark bg-light">
-        <a class="navbar-brand" style="color: black">Mazzuma</a>
+        <a class="navbar-brand" style="color: black" href="{{URL('/')}}">Mazzuma</a>
         <button class="btn btn-link btn-sm order-1 order-lg-0" id="sidebarToggle" href="#"><i class="fas fa-bars"></i></button>
-        <!-- Navbar Search-->
-        {{-- <form class="d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0">
-            <div class="input-group">
-                <input class="form-control" type="text" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2" />
-                <div class="input-group-append">
-                    <button class="btn btn-primary" type="button"><i class="fas fa-search"></i></button>
-                </div>
-            </div>
-        </form> --}}
         <div class="d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0">
             <a class="btn btn-primary" id="last_transac" href="{{URL('/check_transaction')}}">Check Last Transaction</a>
+
+            <a class="btn btn-primary" id="validate_account" href="{{URL('/validate_account')}}">Validate Account</a>
+
+            <a class="btn btn-primary" id="check_bal" href="{{URL('/checkBalance')}}">Check Balance</a>
         </div>
-
-
-        {{-- <button class="btn btn-primary" id="">Check Last Transaction</button> --}}
-        <!-- Navbar-->
-        <ul class="navbar-nav ml-auto ml-md-0">
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" id="userDropdown" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
-                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
-                    <!-- <a class="dropdown-item" href="./views/settings.php">Settings</a> -->
-                    <a class="dropdown-item" href="./views/password.php">Reset Password</a>
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="Dashboard.php?logout">Logout</a>
-                </div>
-            </li>
-        </ul>
     </nav>
     <div id="layoutAuthentication">
         <div id="layoutAuthentication_content">
             <main>
-
-
-                {{-- @include('includes.header') --}}
 
                 <div class="container">
                     @yield('content')

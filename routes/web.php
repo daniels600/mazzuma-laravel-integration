@@ -15,7 +15,7 @@ use App\Http\Controllers\MomoController;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('momo');
 });
 
 
@@ -23,7 +23,15 @@ Route::get('/form',function (){
     return view('momo');
 });
 
+Route::get('/validate_account',function (){
+    return view('validate_account');
+});
+
 Route::post('momo', [MomoController::class, 'makePayment'])->name('momo');
 
 
 Route::get('check_transaction/{id}', [MomoController::class, 'checkTransaction']);
+
+Route::post('validateAccount', [MomoController::class, 'validate_Account'])->name('validateAccount');
+
+Route::get('checkBalance', [MomoController::class, 'getBalance'])->name('checkBalance');
